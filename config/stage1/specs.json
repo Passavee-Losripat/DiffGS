@@ -1,0 +1,22 @@
+{
+    "Description" : "training joint Gaussian model",
+
+    "training_task": "modulation",
+  
+    "GSModelSpecs" : {
+      "hidden_dim" : 512,
+      "latent_dim" : 256,
+      "pn_hidden_dim" : 128,
+      "num_layers" : 9
+    },
+  
+    "num_epochs" : 100001,
+    "log_freq" : 150,
+    "kld_weight" : 1e-5,
+    "latent_std" : 0.25,
+  
+    "sdf_lr" : 1e-4
+}
+  
+  
+  

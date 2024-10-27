@@ -1,0 +1,24 @@
+{
+  "Description" : "diffusion training (unconditional)",
+
+  "training_task": "diffusion",
+
+  "num_epochs" : 50001,
+  "log_freq" : 2500,
+
+  "diff_lr" : 1e-5,
+
+  "diffusion_specs" : {
+    "timesteps" : 1000,
+    "objective" : "pred_x0",
+    "loss_type" : "l2"
+  },
+  "diffusion_model_specs": {
+    "dim" : 768,
+    "dim_in_out" : 768,
+    "depth" : 4,
+    "ff_dropout" : 0.3,
+    "cond" : false
+  }
+}
+
