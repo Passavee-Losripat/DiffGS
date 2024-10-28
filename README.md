@@ -9,7 +9,7 @@
     <a href="https://yushen-liu.github.io/"><strong>Yu-Shen Liu</strong></a>
 </p>
 <p align="center"><strong>(* Equal Contribution)</strong></p>
-<h3 align="center"><a href="">Paper</a> | <a href="https://junshengzhou.github.io/DiffGS">Project Page</a></h3>
+<h3 align="center"><a href="https://arxiv.org/abs/2410.19657">Paper</a> | <a href="https://junshengzhou.github.io/DiffGS">Project Page</a></h3>
 <div align="center"></div>
 </p>
 <p align="center">
@@ -17,7 +17,7 @@
 </p>
 
 
-We release the code of the paper <a href="">DiffGS: Functional Gaussian Splatting Diffusion</a> in this repository.
+We release the code of the paper <a href="https://arxiv.org/abs/2410.19657">DiffGS: Functional Gaussian Splatting Diffusion</a> in this repository.
 
 ## Abstract
 
