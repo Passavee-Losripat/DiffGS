@@ -45,7 +45,7 @@ In this work, we propose DiffGS, a general Gaussian generator based on latent di
 
 <img src="./figs/shapenetchair.png" class="center">
 
-## visualization Results
+## Visualization Results
 
 ### Text/Image-to-3D Generation
 
