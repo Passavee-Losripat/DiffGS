@@ -1,5 +1,5 @@
 <p align="center">
-<h1 align="center">DiffGS: Functional Gaussian Splatting Diffusion
+<h1 align="center">DiffGS: Functional Gaussian Splatting Diffusion <br>
 (NeurIPS 2024)</h1>
 <p align="center">
     <a href="https://junshengzhou.github.io/"><strong>Junsheng Zhou*</strong></a>
