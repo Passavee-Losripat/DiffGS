@@ -17,7 +17,7 @@
 </p>
 
 
-We will release the code of the paper <a href="">DiffGS: Functional Gaussian Splatting Diffusion</a> in this repository.
+We release the code of the paper <a href="">DiffGS: Functional Gaussian Splatting Diffusion</a> in this repository.
 
 ## Abstract
 
@@ -66,11 +66,10 @@ conda env create -f environment.yml
 conda activate diffgs
 ```
 
-## Data Preparation
-Code is coming soon.
+## Pretrained model
 
-## Training
-Code is coming soon.
+We first provide the pretrained models: `Gaussian VAE` and `Gaussian LDM` of the chair unconditional model. Please download the pretrained models from [Google Drive](https://drive.google.com/drive/folders/13JyZtXV6ep26HnVIiFza0jn9F8VL5I1_?usp=sharing).
+
 
 ## Inference
 
@@ -80,9 +79,9 @@ To inference pretrained model of ShapeNet Chair, save the downloaded model check
 python test.py -e config/generate/
 ```
 
-## Pretrained model
+## Training
 
-We provide the pretrained models: `Gaussian VAE` and `Gaussian LDM` of the chair unconditional model. Please download the pretrained models from [Google Drive](https://drive.google.com/drive/folders/13JyZtXV6ep26HnVIiFza0jn9F8VL5I1_?usp=sharing).
+The code and instructions for training and data preparation will be released soon.
 
 ## Citation
 
