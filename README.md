@@ -89,7 +89,7 @@ If you find our code or paper useful, please consider citing
 
     @inproceedings{diffgs,
         title={DiffGS: Functional Gaussian Splatting Diffusion},
-        author={Zhou, Junsheng and Zhang, Weiqi and Ma, and Liu, Yu-Shen},
+        author={Zhou, Junsheng and Zhang, Weiqi and Liu, Yu-Shen},
         booktitle={Advances in Neural Information Processing Systems (NeurIPS)},
         year={2024}
     }
