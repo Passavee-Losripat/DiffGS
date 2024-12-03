@@ -1,6 +1,6 @@
 {
   "Description" : "diffusion training (unconditional)",
-
+  "Data_path" : "config/stage1_sdf/modulations/chair",
   "training_task": "diffusion",
 
   "num_epochs" : 50001,

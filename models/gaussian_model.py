@@ -42,51 +42,22 @@ class GsModel(pl.LightningModule):
         self.occ_model.train()
         self.color_model.train()
 
-
-
-    def configure_optimizers(self):
-
-        optimizer = torch.optim.Adam(self.parameters(), self.specs["sdf_lr"])
-        return optimizer
-
-    def training_step(self, x, idx):
-
-        xyz = x['xyz'] 
-        gt = x['gt_sdf']
-        pc = x['point_cloud']
-
-        shape_features = self.pointnet(pc, xyz)
-
-        pred_sdf = self.model(xyz, shape_features)
-
-        gs_loss = F.l1_loss(pred_sdf.squeeze(), gt.squeeze(), reduction = 'none')
-        gs_loss = reduce(gs_loss, 'b ... -> b (...)', 'mean').mean()
-    
-        return gs_loss 
             
-    def forward(self, pc, xyz):
-        shape_features = self.pointnet(pc, xyz)
+    def forward(self, pc, gs):
+        shape_features = self.pointnet(pc, gs)
 
-        return self.model(xyz, shape_features).squeeze()
+        return self.model(gs, shape_features).squeeze()
 
-    def forward_with_plane_features(self, plane_features, xyz):
-        '''
-        plane_features: B, D*3, res, res (e.g. B, 768, 64, 64)
-        xyz: B, N, 3
-        '''
-        xyz = xyz[:,:,:3]
-        point_features = self.pointnet.forward_with_plane_features(plane_features, xyz) # point_features: B, N, D
-        pred_color = self.color_model( torch.cat((xyz, point_features),dim=-1))
-        pred_gs = self.model( torch.cat((xyz, point_features),dim=-1))
+    def forward_with_plane_features(self, plane_features, gs):
+        gs = gs[:,:,:3]
+        point_features = self.pointnet.forward_with_plane_features(plane_features, gs) # point_features: B, N, D
+        pred_color = self.color_model( torch.cat((gs, point_features),dim=-1))
+        pred_gs = self.model( torch.cat((gs, point_features),dim=-1))
         return pred_color, pred_gs # [B, num_points] 
     
 
-    def forward_with_plane_features_occ(self, plane_features, xyz):
-        '''
-        plane_features: B, D*3, res, res (e.g. B, 768, 64, 64)
-        xyz: B, N, 3
-        '''
-        point_features = self.pointnet.forward_with_plane_features(plane_features, xyz)
-        pred_occ = self.occ_model( torch.cat((xyz, point_features),dim=-1) )  
-        return pred_occ
+    def forward_with_plane_features_occ(self, plane_features, gs):
+        point_features = self.pointnet.forward_with_plane_features(plane_features, gs) # point_features: B, N, D
+        pred_occ = self.occ_model( torch.cat((gs, point_features),dim=-1) )  
+        return pred_occ # [B, num_points] 
     

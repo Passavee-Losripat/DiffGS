@@ -18,13 +18,36 @@ import warnings
 
 from models import * 
 from utils import evaluate, pointcloud
+from dataloader.gaussian_loader import GaussianLoader, GaussianTestLoader
+
 from diff_utils.helpers import * 
 
-from utils.convert import convert
+from convert import convert
 
+
+@torch.no_grad()
+def test_modulations():
+    
+    # load dataset, dataloader, model checkpoint
+    test_dataset = GaussianTestLoader(specs["Data_path"])
+    test_dataloader = torch.utils.data.DataLoader(test_dataset, batch_size=1, num_workers=4)
+
+    ckpt = "{}.ckpt".format(args.resume) if args.resume=='last' else "epoch={}.ckpt".format(args.resume)
+    resume = os.path.join(args.exp_dir, ckpt)
+    model = CombinedModel.load_from_checkpoint(resume, specs=specs).cuda().eval()
+
+    with tqdm(test_dataloader) as pbar:
+        for idx, data in enumerate(pbar):
+            pbar.set_description("Files evaluated: {}/{}".format(idx, len(test_dataloader)))
+            gs = data['gaussians'].cuda() # filename = path to the csv file of sdf data
+            plane_features = model.sdf_model.pointnet.get_plane_features(gs)
+            original_features = torch.cat(plane_features, dim=1)
+            outdir = os.path.join(latent_dir, "{}".format(idx))
+            os.makedirs(outdir, exist_ok=True)
+            latent = model.vae_model.get_latent(original_features)
+            np.savetxt(os.path.join(outdir, "latent.txt"), latent.cpu().numpy())
            
 def test_generation():
-
     with warnings.catch_warnings():
         warnings.simplefilter("ignore")
         model = CombinedModel.load_from_checkpoint(specs["modulation_ckpt_path"], specs=specs, strict=False) 
@@ -81,11 +104,10 @@ if __name__ == "__main__":
     specs = json.load(open(os.path.join(args.exp_dir, "specs.json")))
     print(specs["Description"])
 
-
-    recon_dir = os.path.join(args.exp_dir, "recon")
-    os.makedirs(recon_dir, exist_ok=True)
-    
-
-    if specs['training_task'] == 'combined':
+    if specs['training_task'] == 'modulation':
+        latent_dir = os.path.join(args.exp_dir, "modulations")
+        os.makedirs(latent_dir, exist_ok=True)
+        test_modulations()
+    elif specs['training_task'] == 'combined':
         test_generation()
 

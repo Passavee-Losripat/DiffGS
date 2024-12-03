@@ -3,6 +3,8 @@
 
   "modulation_ckpt_path" : "path_to_modulation_ckpt",
   "diffusion_ckpt_path" : "path_to_diffusion_ckpt",
+  "modulation_ckpt_path" : "config/stage1/epoch=3599.ckpt",
+  "diffusion_ckpt_path" : "config/stage2/epoch=49999.ckpt",
   
   "training_task": "combined",
 

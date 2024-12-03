@@ -289,6 +289,10 @@ class DiffusionModel(nn.Module):
                     perturbed_pc = pc
                     input_pc = pc.repeat(batch, 1, 1)
 
+            #print("shapes: ", pc.shape, self.pc_size, self.perturb_pc, perturbed_pc.shape, full_perturbed_pc.shape)
+            #print("pc path: ", pc_path)
+
+            #print("pc shape: ", perturbed_pc.shape, input_pc.shape)
             if save_pc: # save perturbed pc ply file for visualization
                 pcd = o3d.geometry.PointCloud()
                 pcd.points = o3d.utility.Vector3dVector(perturbed_pc.cpu().numpy().squeeze())

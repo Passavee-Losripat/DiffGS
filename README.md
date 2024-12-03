@@ -65,9 +65,9 @@ We recommend creating an [anaconda](https://www.anaconda.com/) environment using
 conda env create -f environment.yml
 conda activate diffgs
 ```
+**Notice**：Since the code uses the original repository of Gaussian Splatting, please follow the environment setup instructions provided in the [official repository](https://github.com/graphdeco-inria/gaussian-splatting) to install the required dependencies.
 
 ## Pretrained model
-
 We first provide the pretrained models: `Gaussian VAE` and `Gaussian LDM` of the chair unconditional model. Please download the pretrained models from [Google Drive](https://drive.google.com/drive/folders/13JyZtXV6ep26HnVIiFza0jn9F8VL5I1_?usp=sharing).
 
 
@@ -78,10 +78,38 @@ To inference pretrained model of ShapeNet Chair, save the downloaded model check
 ```
 python test.py -e config/generate/
 ```
+## Data preparation
+1. Please refer to the [Stanford ShapeNet Renderer repository](https://github.com/panmari/stanford-shapenet-renderer) to render the ShapeNet dataset. Next, perform point sampling on the mesh and modify the `shapene_folder` path in `sample_points.py`. The sampled points will be used as the initial positions for the Gaussians.
+```
+cd proecess_data
+python sample_points.py
+```
+2. Run the Gaussian fitting script provided by us.
+```
+python train_gaussian.py -s <path to COLMAP or NeRF Synthetic dataset>
+```
+3. Run the conversion script `convert.py` provided by us to transform the Gaussians into data suitable for training, and perform sampling of the Gaussian probability field.
+```
+python convert_data.py
+```
 
 ## Training
 
-The code and instructions for training and data preparation will be released soon.
+### 1. Train Gaussian modulations
+```
+python train.py -e config/stage1/ -b 32 -w 8    # -b for batch size, -w for workers, -r to resume training
+```
+
+### 2. Train the diffusion model using the modulations extracted from the first stage
+```
+# extract the modulations / latent vectors, which will be saved in a "modulations" folder in the config directory
+# the folder needs to correspond to "Data_path" in the diffusion config files
+
+python test.py -e config/stage1/ -r {num epoch}
+
+python train.py -e config/stage2 -b 32 -w 8 
+```
+
 
 ## Citation
 
