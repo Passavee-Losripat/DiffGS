@@ -79,16 +79,24 @@ To inference pretrained model of ShapeNet Chair, save the downloaded model check
 python test.py -e config/generate/
 ```
 ## Data preparation
-1. Please refer to the [Stanford ShapeNet Renderer repository](https://github.com/panmari/stanford-shapenet-renderer) to render the ShapeNet dataset. Next, perform point sampling on the mesh and modify the `shapene_folder` path in `sample_points.py`. The sampled points will be used as the initial positions for the Gaussians.
+1. Thanks to the [Stanford ShapeNet Renderer repository](https://github.com/panmari/stanford-shapenet-renderer), we have modified the code. Please install `Blender` and run the following command: 
+
+   ```bash
+   cd proecess_data
+   blender --background --python render_blender.py -- --output_folder {images_path} {mesh_path}
+   ```
+
+1. Next, perform point sampling on the mesh and modify the `shapene_folder` path in `sample_points.py`. The sampled points will be used as the initial positions for the Gaussians.
 ```
-cd proecess_data
 python sample_points.py
 ```
-2. Run the Gaussian fitting script provided by us.
+3. Run the Gaussian fitting script provided by us.
+
 ```
 python train_gaussian.py -s <path to COLMAP or NeRF Synthetic dataset>
 ```
-3. Run the conversion script `convert.py` provided by us to transform the Gaussians into data suitable for training, and perform sampling of the Gaussian probability field.
+4. Run the conversion script `convert.py` provided by us to transform the Gaussians into data suitable for training, and perform sampling of the Gaussian probability field.
+
 ```
 python convert_data.py
 ```
@@ -97,7 +105,7 @@ python convert_data.py
 
 ### 1. Train Gaussian modulations
 ```
-python train.py -e config/stage1/ -b 32 -w 8    # -b for batch size, -w for workers, -r to resume training
+python train.py -e config/stage1/ -b 4 -w 8    # -b for batch size, -w for workers, -r to resume training
 ```
 
 ### 2. Train the diffusion model using the modulations extracted from the first stage
