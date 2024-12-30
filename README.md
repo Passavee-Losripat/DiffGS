@@ -81,10 +81,10 @@ python test.py -e config/generate/
 ## Data preparation
 1. We would like to thank [Stanford ShapeNet Renderer repository](https://github.com/panmari/stanford-shapenet-renderer) for their contribution,  we have made modifications to the code based on their open-source work. Please install `Blender` and run the following command: 
 
-   ```bash
-   cd proecess_data
-   blender --background --python render_blender.py -- --output_folder {images_path} {mesh_path}
-   ```
+```bash
+cd proecess_data
+blender --background --python render_blender.py -- --output_folder {images_path} {mesh_path}
+```
 
 1. Next, perform point sampling on the mesh and modify the `shapene_folder` path in `sample_points.py`. The sampled points will be used as the initial positions for the Gaussians.
 ```
