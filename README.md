@@ -79,7 +79,7 @@ To inference pretrained model of ShapeNet Chair, save the downloaded model check
 python test.py -e config/generate/
 ```
 ## Data preparation
-1. Thanks to the [Stanford ShapeNet Renderer repository](https://github.com/panmari/stanford-shapenet-renderer), we have modified the code. Please install `Blender` and run the following command: 
+1. We would like to thank [Stanford ShapeNet Renderer repository](https://github.com/panmari/stanford-shapenet-renderer) for their contribution,  we have made modifications to the code based on their open-source work. Please install `Blender` and run the following command: 
 
    ```bash
    cd proecess_data
