@@ -2,7 +2,7 @@
     "Description" : "training joint Gaussian model",
 
     "training_task": "modulation",
-    "Data_path" : "/data/zhangweiqi/gaussian-splatting/chair_data_10w",
+    "Data_path" : "",
 
     "GSModelSpecs" : {
       "hidden_dim" : 512,

@@ -40,7 +40,7 @@ def test_modulations():
         for idx, data in enumerate(pbar):
             pbar.set_description("Files evaluated: {}/{}".format(idx, len(test_dataloader)))
             gs = data['gaussians'].cuda() # filename = path to the csv file of sdf data
-            plane_features = model.sdf_model.pointnet.get_plane_features(gs)
+            plane_features = model.gs_model.pointnet.get_plane_features(gs)
             original_features = torch.cat(plane_features, dim=1)
             outdir = os.path.join(latent_dir, "{}".format(idx))
             os.makedirs(outdir, exist_ok=True)
