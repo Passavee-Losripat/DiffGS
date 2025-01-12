@@ -86,7 +86,7 @@ cd proecess_data
 blender --background --python render_blender.py -- --output_folder {images_path} {mesh_path}
 ```
 
-1. Next, perform point sampling on the mesh and modify the `shapene_folder` path in `sample_points.py`. The sampled points will be used as the initial positions for the Gaussians.
+2. Next, perform point sampling on the mesh and modify the `shapene_folder` path in `sample_points.py`. The sampled points will be used as the initial positions for the Gaussians.
 ```
 python sample_points.py
 ```
