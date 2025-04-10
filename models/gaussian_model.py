@@ -20,7 +20,7 @@ from utils import evaluate
 
 class GsModel(pl.LightningModule):
 
-    def __init__(self, specs):
+    def __init__(self, specs, point2gs=False):
         super().__init__()
         
         self.specs = specs
@@ -31,7 +31,10 @@ class GsModel(pl.LightningModule):
         self.tanh_act = model_specs.get("tanh_act", False)
         self.pn_hidden = model_specs.get("pn_hidden_dim", self.latent_dim)
 
-        self.pointnet = ConvPointnet(c_dim=self.latent_dim, dim=59, hidden_dim=self.pn_hidden, plane_resolution=64)
+        if point2gs:
+            self.pointnet = ConvPointnet(c_dim=self.latent_dim, dim=3, hidden_dim=self.pn_hidden, plane_resolution=64)
+        else:    
+            self.pointnet = ConvPointnet(c_dim=self.latent_dim, dim=59, hidden_dim=self.pn_hidden, plane_resolution=64)
         
         self.model = GSDecoder(latent_size=self.latent_dim, hidden_dim=self.hidden_dim, skip_connection=self.skip_connection, tanh_act=self.tanh_act)
 

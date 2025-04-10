@@ -7,14 +7,15 @@ import time
 from models import * 
 
 class CombinedModel(pl.LightningModule):
-    def __init__(self, specs):
+    def __init__(self, specs, point2gs=False):
         super().__init__()
         self.specs = specs
+        self.point2gs = point2gs
 
         self.task = specs['training_task']
 
         if self.task in ('combined', 'modulation'):
-            self.gs_model = GsModel(specs=specs) 
+            self.gs_model = GsModel(specs=specs, point2gs=point2gs) 
 
             feature_dim = specs["GSModelSpecs"]["latent_dim"]
             modulation_dim = feature_dim*3
@@ -69,7 +70,10 @@ class CombinedModel(pl.LightningModule):
         gs = x['gaussians']
         gaussian_xyz = x['gaussian_xyz']
 
-        plane_features = self.gs_model.pointnet.get_plane_features(gs)
+        if self.point2gs:
+            plane_features = self.gs_model.pointnet.get_plane_features(gaussian_xyz)
+        else:
+            plane_features = self.gs_model.pointnet.get_plane_features(gs)
         original_features = torch.cat(plane_features, dim=1)
         out = self.vae_model(original_features)
         reconstructed_plane_feature, latent = out[0], out[-1]
@@ -106,11 +110,11 @@ class CombinedModel(pl.LightningModule):
 
         self.train()
 
-        gs = x['gaussians'] # (B, 1024, 3) or False if unconditional 
+        context = x['context'] # (B, 1024, 3) or False if unconditional 
         latent = x['latent'] # (B, D)
 
         # unconditional training if cond is None 
-        cond = gs if self.specs['diffusion_model_specs']['cond'] else None 
+        cond = context if self.specs['diffusion_model_specs']['cond'] else None 
 
         # diff_100 and 1000 loss refers to the losses when t<100 and 100<t<1000, respectively 
         # typically diff_100 approaches 0 while diff_1000 can still be relatively high

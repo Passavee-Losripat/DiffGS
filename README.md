@@ -118,6 +118,25 @@ python test.py -e config/stage1/ -r {num epoch}
 python train.py -e config/stage2 -b 32 -w 8 
 ```
 
+### Application: 
+
+### 1. Trian Point to Gaussian
+
+If you want to train point2gaussian, simply add `--point2gs` after the "Train Gaussian modulations" command.
+
+```
+python train.py -e config/stage1/ -b 4 -w 8 --point2gs
+```
+
+### 2. Train Conditional Generation
+
+If you want to train a conditional generative model, please first prepare the condition for each Gaussian, set the `context_path` in `specs.json` to the correct path, and then run the following command.
+
+```
+python train.py -e config/stage2_conditional -b 32 -w 8 
+```
+
+
 
 ## Citation
 

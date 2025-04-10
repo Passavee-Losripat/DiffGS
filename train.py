@@ -28,7 +28,7 @@ def train():
     
     # initialize dataset and loader
     if specs['training_task'] == 'diffusion':
-        train_dataset = ModulationLoader(specs["Data_path"], gs_path=specs.get("gs_path",None))
+        train_dataset = ModulationLoader(specs["Data_path"], context_path=specs.get("context_path",None))
     else:
         train_dataset = GaussianLoader(specs["Data_path"])
     train_dataloader = torch.utils.data.DataLoader(
@@ -46,7 +46,7 @@ def train():
     
     callbacks = [callback, lr_monitor]
 
-    model = CombinedModel(specs)
+    model = CombinedModel(specs, args.point2gs)
     # note on loading from checkpoint:
     # if resuming from training modulation, diffusion, or end-to-end, just load saved checkpoint 
     # however, if fine-tuning end-to-end after training modulation and diffusion separately, will need to load sdf and diffusion checkpoints separately
@@ -88,7 +88,9 @@ if __name__ == "__main__":
     )
 
     arg_parser.add_argument("--batch_size", "-b", default=32, type=int)
-    arg_parser.add_argument( "--workers", "-w", default=8, type=int)
+    arg_parser.add_argument("--workers", "-w", default=8, type=int)
+    arg_parser.add_argument("--point2gs", action="store_true", default=False)
+
 
     args = arg_parser.parse_args()
     specs = json.load(open(os.path.join(args.exp_dir, "specs.json")))

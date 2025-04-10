@@ -256,15 +256,12 @@ class DiffusionModel(nn.Module):
         # STEP 1: sample timestep 
         t = torch.randint(0, self.num_timesteps, (x_start.shape[0],), device=x_start.device).long()
 
-        # STEP 2: perturb condition
-        pc = perturb_point_cloud(cond, self.perturb_pc, self.pc_size, self.crop_percent) if cond is not None else None
-
-        # STEP 3: pass to forward function
-        loss, x, target, model_out, unreduced_loss = self(x_start, t, cond=pc, ret_pred_x=True)
+        # STEP 2: pass to forward function
+        loss, x, target, model_out, unreduced_loss = self(x_start, t, cond=cond, ret_pred_x=True)
         loss_100 = unreduced_loss[t<100].mean().detach()
         loss_1000 = unreduced_loss[t>100].mean().detach()
 
-        return loss, loss_100, loss_1000, model_out, pc
+        return loss, loss_100, loss_1000, model_out, cond
 
 
     def generate_from_pc(self, pc, load_pc=False, batch=5, save_pc=False, return_pc=False, ddim=False, perturb_pc=True):
